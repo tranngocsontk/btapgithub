@@ -1,0 +1,112 @@
+ 
+ <html>
+	<head>
+		<meta charset="UTF-8">
+		<title> </title>
+		 <style type="text/css">
+	 table, th, td{
+    border:1px solid #868585;
+}
+table{
+    border-collapse:collapse;
+}
+table tr:nth-child(odd){
+    background-color:#eee;
+}
+table tr:nth-child(even){
+    background-color:white;
+}
+table tr:nth-child(1){
+    background-color:skyblue;
+}
+ </style>
+	</head>
+	
+	<body>
+	<?php		
+			if(isset($_GET['user']))
+				$User= $_GET['user'];
+			$gan=$User;
+            $Connect = mysqli_connect("localhost",'root','',"bang");
+            $sql = "select * from username where user = '$User' ";
+            $ketqua = mysqli_query($Connect,$sql);
+			while ($row = mysqli_fetch_assoc($ketqua)) 
+			{
+						$Id = $row['id'];
+						$User = $row['user'];
+						$Pass = $row['pass'];
+			}
+			?>
+		<form action="" method="post" enctype="multipart/form-data">
+		
+			
+			<table>
+			<tbody>
+				<tr>
+					<th colspan="5"><p><h3>Cập Nhật tài khoảng : </h3> </th>
+				</tr>
+				<tr><th>
+					Id:</th>
+					
+				
+				<th >
+					Tài khoảng:</th>
+				
+				
+				<th >
+					Mật khẩu:</th>
+				</tr>
+				<tr>
+				<td>
+				<input type="text" name="id" value="<?php 
+					if(isset($_POST['id'])) echo $_POST['id'];
+				else 
+					if (!empty($Id)) echo $Id; ?>"/> </td>
+				<td>
+				<input type="text" name="user" value="<?php 
+					if(isset($_POST['user'])) echo $_POST['user'];
+				else 
+					if (!empty($User)) echo $User ;?>"/></td>
+				<td>
+				<input type="text" name="pass" value="<?php
+					if(isset($_POST['pass'])) echo $_POST['pass'];
+				else 
+					if (!empty($Pass)) echo $Pass?>"/></td>
+				</tr>
+				
+			</tbody>
+			</table>
+			
+					<p><input type="submit" name="btn" value="Sữa"/> 
+				<td>
+				<p><a href="/Btap/quanlytk.php">Trở về danh sách tài khoảng</a>
+				
+				
+			
+			<?php 
+				if(isset($_POST['btn'])){
+      if(isset($_POST['id']))
+        $Id=$_POST['id'];
+	if(isset($_POST['user']))
+        $User=$_POST['user'];
+      if(isset($_POST['pass']))
+        $Pass=$_POST['pass'];
+      
+        $dem = mysqli_num_rows($ketqua);
+        
+      if ($dem >= 1 ){
+          
+            $sql ="UPDATE `username` SET  `id`=$Id, `user`='$User', `pass`='$Pass' WHERE `user`='$gan'";
+          if (mysqli_query($Connect, $sql)){
+            echo '<p>'."Cập nhập sản phẩm thành công.";
+            echo '<p>'."Nhấn ".'<a href="quanlytk.php">vào đây</a>'." để xem danh sách Tài khoảng.";
+          }
+          else {echo '<p>'."Cập nhập sản phẩm không thành công.";}
+     }
+    else{ echo "chua ket noi dc csdl";}
+    }
+		?>
+    </form>
+    </body>
+</html>
+ 
